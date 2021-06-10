@@ -1,22 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
 
 function App() {
+  const [data, setData] = React.useState(null);
+
+  React.useEffect(() => {
+    fetch("/tiendas")
+      .then((res) => res.json())
+      .then((d) => setData(d.tiendas));
+  }, []);
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+        <h1>Tiendas</h1>
         <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+          {!data ? "Loading..." :
+            data.map((d, i) => {
+              return <p>
+                <span>{i+1 + " "}</span>
+                <span>{d.direccion + " "}</span>
+                <span>{d.metodo_pago}</span>
+              </p>
+            })
+          }</p>
       </header>
     </div>
   );
